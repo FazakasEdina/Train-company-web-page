@@ -1,0 +1,89 @@
+<% if (interchanges.length) { %>
+    <% interchanges.forEach((ic) => { %>
+        <%#  elso vonat %>
+        <div class="list">
+            <div class="list">
+                <div class="parts">
+                    <div class="list-line">
+                    <%= ic.FirstLineID %>.
+                    <img src="departure.png" alt="train station"/>
+
+                    <%= ic.FirstDepartureStation %> 
+                    <img src="arrow.png" alt="arrow"/>
+                    
+                    <img src="arrival.png" alt="train station"/>
+                    <%= ic.IntermediateStation %> 
+                    </div>
+                    <div class="list-line">
+                        <img src="calendar.png" alt="calendar"/>
+                        <%= ic.Day %>
+                        <img src="clock.png" alt="clock"/>
+                        <%= ic.FirstDepartureTime %>
+                        -
+                        <img src="clock.png" alt="clock"/>
+                        <%= ic.FirstArrivalTime %>
+                    </div>
+                
+                    <section class="detail-price" id="list-price-<%= ic.FirstLineID %>"> </section>
+                    <section class="detail-type" id="list-type-<%= ic.FirstLineID %>"> </section>
+
+                    <a class="details" id="details" href="#f<%= ic.FirstLineID %>" name="f<%= ic.FirstLineID %>" onclick="listMore(`<%= ic.FirstLineID %>`)">Show more details...</a>
+                </div>
+                <div class="parts">
+                    <% if (payload.username) { %>
+                        <a class="general-links" href="./buyTicketWithId?id=<%= ic.FirstLineID %>"> Buy a ticket for this train line. </a>
+
+                        <a class="general-links" href="./booked?id=<%= ic.FirstLineID %>"> List booked tickets</a>
+                        
+                    <% } %>
+                </div>
+            </div>
+
+            <%#  masodik vonat %>
+            <div class="list">
+                <div class="parts">
+                    <div class="list-line">
+                    <%= ic.SecondLineID %>.
+                    <img src="departure.png" alt="train station"/>
+
+                    <%= ic.IntermediateStation %> 
+                    <img src="arrow.png" alt="arrow"/>
+                    
+                    <img src="arrival.png" alt="train station"/>
+                    <%= ic.EndStation %> 
+                    </div>
+                    <div class="list-line">
+                        <img src="calendar.png" alt="calendar"/>
+                        <%= ic.Day %>
+                        <img src="clock.png" alt="clock"/>
+                        <%= ic.SecondDepartureTime %>
+                        -
+                        <img src="clock.png" alt="clock"/>
+                        <%= ic.SecondArrivalTime %>
+                    </div>
+                
+                    <section class="detail-price" id="list-price-<%= ic.SecondLineID %>"> </section>
+                    <section class="detail-type" id="list-type-<%= ic.SecondLineID %>"> </section>
+
+                    <a class="details" id="details" href="#s<%= ic.SecondLineID %>" name="<%= ic.SecondLineID %>" onclick="listMore(`<%= ic.SecondLineID %>`)">Show more details...</a>
+                </div>
+                <div class="parts">
+                    <% if (payload.username) { %>
+                        <a class="general-links" href="./buyTicketWithId?id=<%= ic.SecondLineID %>"> Buy a ticket for this train line. </a>
+
+                        <a class="general-links" href="./booked?id=<%= ic.SecondLineID %>"> List booked tickets</a>
+                        
+                    <% } %>
+                </div>
+            </div>
+
+            <%#  informaciok %>
+            <div class="list">
+                <div class="parts">
+                Total cost: <%= ic.Sum %>
+                Duration of travel: <%= ic.Time %>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+<% } %>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs', {title: 'Buy ticket with given ID'}) %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+    
+    <main>
+        <div id="form">
+            
+            <form method="POST" action="/buyWithGivenId">
+                <label for="id"> Buy ticket for the train line: </label>
+                <input id="id" name="id" value="<%= id %>" readonly/> 
+                <br>
+                <label for="username"> Username: </label>
+                <br> 
+
+                <% if (payload.username) { %>
+                    <input id="username" type="text" name="username" value="<%= payload.username %>" readonly/>
+                <% } else { %>
+                    <input id="username" type="text" name="username" pattern="^[A-Z][a-z]+( [A-Z][a-z]+){0,2}$" required/>
+                <% } %>
+
+                <br>
+                <br>
+                <input type="submit" value="BUY" class="submit" />
+                <br>
+                <p> <%= message %> </p>
+            </form>
+        </div>
+    </main>
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

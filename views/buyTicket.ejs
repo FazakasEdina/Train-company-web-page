@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs', {title: 'Buy ticket'}) %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+
+    <main>
+    <div id="form">
+        
+        <form method="POST" action="/buy">
+            <label for="id">Select the train ID: </label>
+            <br>
+            <% if (req.length) { %>
+                <select name="id">
+                    <% req.forEach(element => { %>
+                        <option> <%= element.LineID %> </option>
+                    <% }); %>
+                </select>
+            <% } else { %>
+                <label for="id"> There aren't train line. </label>
+            <% } %>
+           
+            <br>
+            <label for="username"> Username: </label>
+            <br>
+            <% if (payload.username) { %>
+                <input id="username" type="text" name="username" value="<%= payload.username %>" readonly/>
+            <% } else { %>
+                <input id="username" type="text" name="username" pattern="^[A-Z][a-z]+( [A-Z][a-z]+){0,2}$" required/>
+            <% } %>
+            <br>
+            <br>
+            <input type="submit" value="BUY" class="submit" />
+            <br>
+            <p> <%= message %> </p>
+        </form>
+    </div>
+    </main>
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

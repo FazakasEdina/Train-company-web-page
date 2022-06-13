@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head.ejs', {title: 'Filter trains'}) %>
+</head>
+
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+
+    <main>
+        <div class="filter-form">
+            <form method="GET" action="/filter">
+                <div>
+                    <label for="from">From: </label>
+                    <input id="from" type="text" name="from" onblur="validateCityFrom()"/>
+                    <div id="error-from" class="error"></div>
+
+                    <br>
+                    <label for="to">To: </label>
+                    <input id="to" type="text" name="to" onblur="validateCityTo()"/>
+                    <div id="error-to" class="error"></div>
+                    
+                    <br>
+                    <label for="day"> Day: </label>
+                    <select name="day">
+                        <option></option>
+                        <option> Monday </option>
+                        <option> Tuesday </option>
+                        <option> Wednesday </option>
+                        <option> Thursday </option>
+                        <option> Friday </option>
+                        <option> Saturday </option>
+                        <option> Sunday </option>
+                    </select>
+
+                    <br>
+                    <label for="d-clock">Departure time min: </label>
+                    <input id="d-clock" type="time" name="dclock"/>
+
+                    <br>
+                    <label for="a-clock">Arrival time max: </label>
+                    <input id="a-clock" type="time" name="aclock"/>
+        
+                    <br>
+                    <a class="details" id="details" href="#show" onclick="showAdvanced()">Advanced search</a>
+
+                    <div id="show">
+                        <label for="min-price">Min price: </label>
+                        <input id="min-price" type="number" name="minprice" onblur="validateMinPrice()"/>
+                        <div id="error-min-price" class="error"></div>
+
+                        <br>
+
+                        <label for="max-price">Max price: </label>
+                        <input id="max-price" type="number" name="maxprice" onblur="validateMaxPrice()"/>
+                        <div id="error-max-price" class="error"></div>
+                        <div id="error-min-max" class="error"></div>
+                        
+                        <br>
+                        <label> Train type: </label>
+                        <select name="type">
+                            <option></option>
+                            <option> Regional </option>
+                            <option> Fast </option>
+                        </select>
+                        
+                    </div>
+                    <br>
+                    <input id="submit" type="submit" value="FILTER" class="submit" />
+                </div> 
+            </form>
+        </div>
+    </main>
+    <%- include('partials/footer.ejs') %>
+
+    <script src="./filterTrains.js"></script>
+</body>
+
+</html>

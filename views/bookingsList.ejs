@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs', {title: 'Booked list'}) %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+    
+    <main>
+    <% if (request.length) { %>
+        <% request.forEach((req) => { %>
+            <%# ha admin azt szeretnem minden fogalalst lathasson, de csak a sajatjat torolhesse %>
+            <% if (payload.userlevel === 'admin') { %>
+                <div class="list">
+                    <p> <%= req.bookingID %>. </p>
+                    <p> Username: <%= req.UserName %></p>
+                    <p> Train line ID: <%= req.trainlineID %></p>
+                    <a class="general-links" href="/"> Back to list of trains </a>
+                    <% if (payload.username === req.UserName) { %>
+                        <a class="delete-button" href="#" onclick="deleteBooking(event, `<%= req.bookingID%>`)"> Delete this booking </a>
+                    <% } %>
+                </div>
+                
+            <%# ha user van belepve akkor, csak a sajatjat lassa es azt torolhesse is %>
+            <% } else if (payload.username === req.UserName) { %>
+                <div class="list">
+                    <p> <%= req.bookingID %>. </p>
+                    <p> UserID: <%= req.clientID %> </p>
+                    <p> UserName: <%= req.UserName %></p>
+                    <p> Train line <%= req.trainlineID %></p>
+                    <a class="general-links" href="/"> Back to list of trains </a>
+                    
+                    <a class="delete-button" href="#" onclick="deleteBooking(event, `<%= req.bookingID%>`)"> Delete this booking </a>
+                    
+                </div>
+            <% } %>
+        <% }) %>
+    <% } else { %>
+        <div class="list">
+            There is no booking for the given train line.
+        </div> 
+    <% } %>
+    </main>
+    <%- include('partials/footer.ejs') %>
+    <script src="./deleteBooking.js"> </script>
+</body>
+</html>

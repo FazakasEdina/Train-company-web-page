@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs', {title: 'Root'}) %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+    
+    <main>
+        <%- include ('partials/listTrains', { request }) %>
+    </main>
+    
+    <%- include('partials/footer.ejs') %>
+    
+    <script src="./listMoreDetails.js"></script>
+    <script src="./deleteTrainLine.js"></script>
+</body>
+</html>

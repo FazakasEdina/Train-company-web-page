@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs', {title: 'Error'}) %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+    
+    <main>
+        <div id="form"> 
+            <div class="error"> <%= message%> </div>
+        </div>
+    </main>
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

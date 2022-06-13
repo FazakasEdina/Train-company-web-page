@@ -1,0 +1,49 @@
+<a name="list-top"> </a>
+<% if (request.length) { %>
+    <% request.forEach((req) => { %>
+        <div class="list">
+            <div class="parts">
+                <div class="list-line">
+                <%= req.LineID %>.
+                <img src="departure.png" alt="train station"/>
+
+                <%= req.DepartureStation %> 
+                <img src="arrow.png" alt="arrow"/>
+                
+                <img src="arrival.png" alt="train station"/>
+                <%= req.ArrivalStation %> 
+                </div>
+                <div class="list-line">
+                    <img src="calendar.png" alt="calendar"/>
+                    <%= req.Day %>
+                    <img src="clock.png" alt="clock"/>
+                    <%= req.DepartureTime %>
+                    -
+                    <img src="clock.png" alt="clock"/>
+                    <%= req.ArrivalTime %>
+                </div>
+            
+                <section class="detail-price" id="list-price-<%= req.LineID%>"> </section>
+                <section class="detail-type" id="list-type-<%= req.LineID%>"> </section>
+
+                <a class="details" id="details" href="#<%= req.LineID %>" name="<%= req.LineID %>" onclick="listMore(`<%= req.LineID %>`)">Show more details...</a>
+            </div>
+            <div class="parts">
+                <% if (payload.username) { %>
+                    <a class="general-links" href="./buyTicketWithId?id=<%= req.LineID %>"> Buy a ticket for this train line. </a>
+
+                    <a class="general-links" href="./booked?id=<%= req.LineID %>"> List booked tickets</a>
+                    
+                    <%# csak az admin torolhet %>
+                    <% if (payload.userlevel === 'admin') { %>
+                        <a href="#list-top" class="delete-button" onclick="deleteTrainLine(event, `<%= req.LineID %>`)"> DELETE </a>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+    <% }) %>
+<% } else { %>
+    <div class="list">
+        There are not train lines.
+    </div> 
+<% } %>

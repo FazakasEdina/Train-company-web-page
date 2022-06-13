@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs', {title: 'Registrate'}) %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+
+    <main>
+        <div class="auth-page">
+            <div class="list">
+                <form method="POST" action="/auth/registration">
+                    <label>Username: </label>
+                    <input id="username" type="text" name="username" required/>
+
+                    <br>
+                    <label>Email: </label>
+                    <input id="email" type="email" name="email" required/>
+                    
+                    <br>
+                    <label>Password: </label>
+                    <input id="pwd" type="password" name="pwd" required/>
+                    
+                    <br>
+                    <br>
+                    <input id="submit" type="submit" value="REGISTRATE" class="submit" />
+
+                </form>
+            </div>
+        </div>
+
+    </main>
+    
+    <%- include('partials/footer.ejs') %>
+    
+</body>
+</html>

@@ -1,0 +1,32 @@
+<div class="navbar">
+
+    <img src="logo.png" alt ="logo"/>
+        <a class="icon" href="/">Train company </a>
+        <%# csak az admin adhat hozza vonatot %>
+        <% if (payload.userlevel === 'admin') { %> 
+            <a class="general-links" href="/addTrain"> Add train </a>
+            <a class="general-links" href="/addAdmin"> Add admin</a>
+        <% } %>
+        <%# egy user tud venni jegyet, illetve az admin %>
+        <% if (payload.userlevel === 'user' || payload.userlevel === 'admin') { %> 
+            <a class="general-links" href="/buyTicket"> Buy Ticket </a>
+            <a class="general-links" href="/listMyBookings"> List my bookings </a>
+        <% } %>
+
+        <a class="general-links" href="/filterPage"> Search trains </a>
+        
+        <% if (payload.username) { %>
+            <form method="POST" action="/auth/logout">
+                <input type="submit" class="login-button" value="Log out"/>
+            </form>
+            <p> <%= payload.username %>
+            <% if (payload.userlevel === 'admin') { %> 
+                (admin)
+            <% } %>
+            </p>
+        <% } else { %>
+            <a class="login-button" href="./loginPage"> Log in</a>
+            <a class="registration-button" href="./registration"> Registrate</a>
+        <% } %>
+    
+</div>

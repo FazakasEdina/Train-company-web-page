@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head.ejs', {title: 'Log in'}) %>
+</head>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+
+    <main>
+        <div class="auth-page">
+            <div class="list">
+                <form method="POST" action="/auth/login">
+                    <label>Username: </label>
+                    <input id="username" type="text" name="username" required/>
+
+                    <br>
+                    <label>Password: </label>
+                    <input id="pwd" type="password" name="pwd" required/>
+                    
+                    <br>
+                    <br>
+                    <input id="submit" type="submit" value="LOG IN" class="submit" />
+
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <%- include('partials/footer.ejs') %>
+    
+</body>
+</html>

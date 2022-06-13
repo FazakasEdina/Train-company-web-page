@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head.ejs', {title: 'Add train'}) %>
+</head>
+
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <%- include('partials/header.ejs') %>
+
+    <main>
+    <div id="form">
+        <form method="POST" action="/add">
+            <label>Departure: </label>
+            <input id="from" type="text" name="from" onblur="validateCityFrom()" />
+            <div id="error-from" class="error"></div>
+
+            <br>
+            <label for="to">Arrival: </label>
+            <input id="to" type="text" name="to" onblur="validateCityTo()" />
+            <div id="error-to" class="error"></div>
+
+            <br>
+            <label>Wich day of week: </label>
+            <select name="day">
+                <option> Monday </option>
+                <option> Tuesday </option>
+                <option> Wednesday </option>
+                <option> Thursday </option>
+                <option> Friday </option>
+                <option> Saturday </option>
+                <option> Sunday </option>
+            </select>
+
+            <br>
+            <br>
+            <label for="d-clock">Departure time: </label>
+            <input id="d-clock" type="time" name="dclock" onblur="validateClockD()" />
+            <div id="error-clock-d" class="error"></div>
+
+            <br>
+            <label for="a-clock">Arrival time: </label>
+            <input id="a-clock" type="time" name="aclock" onblur="validateClockA()" />
+            <div id="error-clock-a" class="error"></div>
+
+            <br>
+            <label for="price">Ticket price: </label>
+            <input id="price" type="number" name="price" onblur="validatePrice()" />
+            <div id="error-price" class="error"></div>
+
+            <br>
+            <label> Train type: </label>
+            <select name="type">
+                <option> Regional </option>
+                <option> Fast </option>
+            </select>
+
+            <br>
+            <br>
+            <input id="submit" type="submit" value="ADD" class="submit" />
+
+        </form>
+
+    </div>
+    </main>
+    <%- include('partials/footer.ejs') %>
+    <script src="./addTrain.js"></script>
+</body>
+
+</html>
