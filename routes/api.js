@@ -21,7 +21,6 @@ router.get('/listDetails/:id', async (req, res) => {
 // -------------------------------
 router.delete('/delete/:id', checkJWTToken, async (req, res) => {
   try {
-    // ellenorzes admin van e bejelenkezde
     if (res.locals.payload.userlevel !== 'admin') {
       res.status(403).json({ message: 'Only the admins can delete train line.' });
     } else {
@@ -42,13 +41,12 @@ router.delete('/delete/:id', checkJWTToken, async (req, res) => {
 // -------------------------------
 router.delete('/deleteBooking/:id', checkJWTToken, async (req, res) => {
   try {
-    // lekell ellenorizzem, hogy a bejelentkezett felhasznalo a sajatjat torli
     const usernameInDB = (await db.findUserByBooking(req.params.id))[0].UserName;
     if (usernameInDB !== res.locals.payload.username) {
       res.status(400).json({ message: 'The username is invalid' });
     } else {
       const message = await db.deleteBooking(req.params.id);
-      if (message.message !== '') { // ha nem ures akkor problema lepett fel
+      if (message.message !== '') {
         res.status(400).json({ message: message.message });
       }
       res.sendStatus(204);

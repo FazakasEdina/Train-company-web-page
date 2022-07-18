@@ -1,0 +1,8 @@
+.git
+.gitignore
+.eslintignore
+.eslintrc.yml
+.gitlab-ci.yml
+README.md
+node_modules
+dockerfile

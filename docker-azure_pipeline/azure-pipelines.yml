@@ -1,0 +1,35 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+ 
+stages: 
+- stage: Main_Stage
+  jobs:
+    - job: Do_Everything
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+        displayName: 'Install Node.js'
+
+      - script: |
+          npm install
+          npx eslint .
+        displayName: 'npm install and linter run'
+      
+      - script: curl https://cli-assets.heroku.com/install-ubuntu.sh | bash
+        displayName: Install Heroku CLI
+
+      - script: docker build -t registry.heroku.com/train-company/web .
+        displayName: Build docker image
+
+      - script: docker login -u $(HEROKU_USER) -p $(HEROKU_PASSWORD) registry.heroku.com
+        displayName: Login to heroku registry
+
+      - script: docker push registry.heroku.com/train-company/web
+        displayName: Push image to heroku
+      
+      - script: docker run --rm -e HEROKU_API_KEY=$(HEROKU_PASSWORD) wingrunr21/alpine-heroku-cli container:release web --app train-company
+        displayName: Start the app on heroku    

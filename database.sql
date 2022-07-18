@@ -6,7 +6,6 @@ CREATE DATABASE IF NOT EXISTS `web`;
 -- GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'feim1911';
 
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'feim1911';
--- a db.js futtatasanal kaptam egy hibat amit a fenti sorral javitottam
 
 CREATE TABLE `web`.`users` (
   `UserID` INT NOT NULL AUTO_INCREMENT,

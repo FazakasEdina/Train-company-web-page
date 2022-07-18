@@ -1,0 +1,19 @@
+FROM node:14
+
+WORKDIR /docker/softenghazi
+
+COPY package.json .
+
+RUN npm install --production
+
+COPY . .
+
+EXPOSE 8088
+
+CMD ["npm", "start"]
+# docker build -t web-trains .
+# docker run web-trains
+# 	docker tag web-trains fazakasedina/web-trains
+#	docker push fazakasedina/web-trains
+
+

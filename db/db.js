@@ -12,65 +12,54 @@ const connectionPool = mysql.createPool({
   connectionLimit: 3,
 });
 
-// fuggveny ami promisokat kuld vissza, a promist betudjuk varni
+// ------ for docker-compose run ------
+// const connectionPool = mysql.createPool({
+//   host: 'my_db',
+//   port: 3307,
+//   // port: 3306,
+//   user: 'root',
+//   password: 'feim1911',
+//   database: 'web',
+//   connectionLimit: 3,
+//   connectTimeout: 30000,
+// });
+
+// return Promises
 const executeQuery = util.promisify(connectionPool.query).bind(connectionPool);
 
-// ------------------------------------------------ felhasznaloval kapcsolatos db muveletek:
-
-// -------
-// felhasznalo nev lekerese foglalas ID alapjan
-// -------
+// ------------------------------------------------ Users
 export function findUserByBooking(id) {
   const query = 'SELECT web.users.UserName FROM web.booking JOIN web.users ON web.booking.clientID = web.users.UserID WHERE web.booking.bookingID = ?';
   return executeQuery(query, [id]);
 }
 
-// -------
-// felhasznalo ID megtalalasa nev szerint
-// -------
 export function findUserByName(name) {
   const query = 'SELECT UserID FROM web.users WHERE UserName LIKE ?';
   return executeQuery(query, [name]);
 }
 
-// -------
-// felhasznalo nev megtalalasa ID szerint -> bejelentekezeshez
-// -------
 export function getUser(id) {
   const query = 'SELECT UserName, UserLevel, Password FROM web.users WHERE UserID = ?';
   return executeQuery(query, [id]);
 }
 
-// ------------------------------------------------ foglalassal kapcsolatos db muveletek:
-
-// -------
-// letezik-e a foglalas
-// -------
+// ------------------------------------------------ Booking
 export function checkBookingIdExisting(id) {
   const query = 'SELECT 1 FROM web.booking WHERE bookingID = ?';
   return executeQuery(query, [id]);
 }
 
-// -------
-// foglalas torles
-// -------
 export function deleteBooking(id) {
   const query = 'DELETE FROM web.booking WHERE bookingID = ?';
   return executeQuery(query, [id]);
 }
 
-// -------
-// foglalas
-// -------
 export function insertBooking(data) {
   // data = { userid, lineid}
   const query = 'INSERT INTO web.booking VALUES (default, ?, ?)';
   return executeQuery(query, [data.lineid, data.userid]);
 }
 
-// -------
-// osszes foglalas kilistazasa
-// -------
 export function findAllBookedTicket(id) {
   const query = `SELECT web.booking.bookingID AS bookingID, web.users.UserName AS UserName, web.booking.clientID AS clientID, web.booking.trainlineID AS trainlineID
     FROM web.booking
@@ -78,6 +67,7 @@ export function findAllBookedTicket(id) {
    WHERE web.booking.trainlineID = ?`;
   return executeQuery(query, [id]);
 }
+
 export function findUsersAllBookedTicket(name) {
   const query = `SELECT web.booking.bookingID AS bookingID, web.users.UserName AS UserName, web.booking.clientID AS clientID, web.booking.trainlineID AS trainlineID
   FROM web.booking
@@ -87,67 +77,46 @@ export function findUsersAllBookedTicket(name) {
   return executeQuery(query, [name]);
 }
 
-// ------------------------------------------------ vonattal kapcsolatos db muveletek:
+// ------------------------------------------------ Trains
 
-// -------
-// vonat hozzaadas
-// -------
 export function insertTrainLine(data) {
   const query = 'INSERT INTO web.trainline VALUES (default, ?, ?, ?, ?, ?, ?, ?)';
   const params = [data.from, data.to, data.price, data.dclock, data.aclock, data.day, data.type];
   return executeQuery(query, params);
 }
 
-// -------
-// letezik-e a vonat
-// -------
 export function checkIDExisting(id) {
   const query = 'SELECT 1 FROM web.trainline WHERE LineID = ?';
   return executeQuery(query, [id]);
 }
 
-// -------
-// vonat vonal torles
-// -------
 export function deleteTrainLine(id) {
   const query = 'DELETE FROM web.trainline WHERE LineID = ?';
   return executeQuery(query, [id]);
 }
 
-// -------
-// minden vonat listazasa
-// -------
 export function findAllTrainLine() {
   const query = 'SELECT * FROM web.trainline';
   return executeQuery(query);
 }
 
-// -------
-// vonat megtalalsa id szerint
-// -------
 export function findTrainLineById(id) {
   const query = 'SELECT * FROM web.trainline WHERE LineID = ?';
   return executeQuery(query, [id]);
 }
 
-// -------
-// vonat aranak es tipusanak lekerese
-// -------
 export function byIdGetMoreDetail(id) {
   const query = 'SELECT Price, Type FROM web.trainline WHERE LineID = ?';
   return executeQuery(query, [id]);
 }
 
-// -------
-// osszes vonat jarat ID-ja
-// -------
 export function getAllTrainLineID() {
   const query = 'SELECT LineID FROM web.trainline';
   return executeQuery(query);
 }
 
 // -------------------------------------------------------
-// szures a vonatokra reszenkent a fuggceny hosszusag miatt
+// filter trains
 // -------
 
 function checkAllData(data) {
@@ -161,6 +130,7 @@ function createFilterQueryBase(data) {
   }
   return q;
 }
+
 function createFilterQueryStringPart(query, data) {
   let q = query;
   if (data.from !== '') {
@@ -250,7 +220,7 @@ export function filterTrainLines(data) {
 }
 
 // -------
-// atszallasok megtalalasa egy atszallassal
+// one interchange
 // -------
 export function findOneInterchange(data) {
   // t1.DepartureStation as FirstDepartureStation, t1.ArrivalStation as FisrtArrivalStation,
@@ -281,19 +251,19 @@ export function findOneInterchange(data) {
     query += ' AND t2.ArrivalTime <= ?';
     params.push(data.aclock);
   }
-  // egyetlen a price-ra nem teszek szuresi feltetelt
   return executeQuery(query, params);
 }
+
 // -------------------------------------------------------------------
 // -------
-// uj felhszanlo regisztralasa
+// new user registration
 // -------
 export function registrate(data) {
   // data.username, data.password, data.email
   return executeQuery('INSERT INTO web.users VALUES (default, ?, ?, \'user\', ?);', [data.username, data.email, data.password]);
 }
 // -------
-// uj admin regisztralasa
+// new admin registratioin
 // -------
 export function addAdmin(data) {
   // data.username, data.password, data.email
@@ -301,7 +271,7 @@ export function addAdmin(data) {
 }
 
 // -------
-// beszur par felhasznalot
+// initial users
 // -------
 function insertDefaultUsers() {
   const pwd1 = bcrypt.hashSync('kativagyok', 10);
@@ -314,7 +284,7 @@ function insertDefaultUsers() {
 }
 
 // ------------
-// minden inditasnal letre hozza a felhasznalokat, ha ezelott nem lettek volna
+// if the initial users don't exist then insert them
 // ------------
 (async () => {
   try {
